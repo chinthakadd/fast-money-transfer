@@ -1,7 +1,0 @@
-/*C7*/SET SCHEMA PUBLIC
-create table if not exists accounts (Id integer identity primary key, displayName varchar(255) unique)
-/*C5*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C6*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C7*/DISCONNECT
