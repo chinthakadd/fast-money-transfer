@@ -2,7 +2,7 @@ package com.chinthakad.samples.fmt;
 
 import com.chinthakad.samples.fmt.client.JdbcClientVerticle;
 import com.chinthakad.samples.fmt.seedwork.queue.QueueConfig;
-import com.chinthakad.samples.fmt.core.model.domain.AccountListHolder;
+import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;

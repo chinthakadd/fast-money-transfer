@@ -14,6 +14,6 @@ public class AccountSvcMessage<T> {
   private ActionType action;
   private T data;
   public enum ActionType {
-    LIST, TRANSFER
+    LIST_ACCOUNTS, LIST_TRANSFERS, TRANSFER
   }
 }

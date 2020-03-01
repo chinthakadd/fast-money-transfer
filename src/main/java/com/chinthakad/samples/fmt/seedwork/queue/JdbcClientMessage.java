@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountJdbcMessage<T> {
+public class JdbcClientMessage<T> {
   private RequestType requestType;
   private T data;
 
   public enum RequestType {
-    SELECT, UPDATE
+    SELECT, SAVE, UPDATE
   }
 }

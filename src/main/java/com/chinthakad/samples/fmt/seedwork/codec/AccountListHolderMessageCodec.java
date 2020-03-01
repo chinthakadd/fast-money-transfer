@@ -1,6 +1,6 @@
 package com.chinthakad.samples.fmt.seedwork.codec;
 
-import com.chinthakad.samples.fmt.core.model.domain.AccountListHolder;
+import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 
 public class AccountListHolderMessageCodec extends LocalOnlyMessageCodec<AccountListHolder, AccountListHolder> {
 

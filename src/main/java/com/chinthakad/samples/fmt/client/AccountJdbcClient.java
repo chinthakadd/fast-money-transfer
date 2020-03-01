@@ -1,7 +1,7 @@
 package com.chinthakad.samples.fmt.client;
 
 import com.chinthakad.samples.fmt.core.model.domain.Account;
-import com.chinthakad.samples.fmt.core.model.domain.AccountListHolder;
+import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonArray;

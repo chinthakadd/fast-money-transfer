@@ -1,5 +1,7 @@
-package com.chinthakad.samples.fmt.core.model.domain;
+package com.chinthakad.samples.fmt.core.model.dto;
 
+import com.chinthakad.samples.fmt.core.model.BaseModel;
+import com.chinthakad.samples.fmt.core.model.domain.Account;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Data
 @ToString
-public class AccountListHolder {
+public class AccountListHolder implements BaseModel {
 
   private List<Account> accounts = new ArrayList<>();
 

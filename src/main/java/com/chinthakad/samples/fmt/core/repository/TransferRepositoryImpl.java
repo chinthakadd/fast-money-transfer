@@ -1,6 +1,6 @@
 package com.chinthakad.samples.fmt.core.repository;
 
-import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
+import com.chinthakad.samples.fmt.core.model.dto.TransferListHolder;
 import com.chinthakad.samples.fmt.seedwork.queue.JdbcClientMessage;
 import com.chinthakad.samples.fmt.seedwork.queue.QueueConfig;
 import io.vertx.core.AsyncResult;
@@ -10,20 +10,20 @@ import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 
-public class AccountRepositoryImpl implements AccountRepository {
+public class TransferRepositoryImpl implements TransferRepository {
 
   private EventBus eventBus;
 
-  public AccountRepositoryImpl(EventBus eventBus) {
+  public TransferRepositoryImpl(EventBus eventBus) {
     this.eventBus = eventBus;
   }
 
   @Override
-  public Future<AccountListHolder> findAll() {
-    Promise<AccountListHolder> alhPromise = Promise.promise();
-    eventBus.request(QueueConfig.CONFIG_ACCOUNT_CLIENT_JDBC_QUEUE,
+  public Future<TransferListHolder> findAll() {
+    Promise<TransferListHolder> alhPromise = Promise.promise();
+    eventBus.request(QueueConfig.CONFIG_TRANSFER_CLIENT_JDBC_QUEUE,
       JdbcClientMessage.builder().requestType(JdbcClientMessage.RequestType.SELECT).build(),
-      (Handler<AsyncResult<Message<AccountListHolder>>>) event -> {
+      (Handler<AsyncResult<Message<TransferListHolder>>>) event -> {
         if (event.failed()) {
           event.cause().printStackTrace();
           alhPromise.fail("Unable to get accounts");

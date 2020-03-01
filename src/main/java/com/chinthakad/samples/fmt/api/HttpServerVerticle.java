@@ -48,6 +48,7 @@ public class HttpServerVerticle extends AbstractVerticle {
   private Router router() {
     Router router = Router.router(vertx);
     router.get("/accounts").handler(accountHandlerProvider.getAccounts());
+    router.get("/accounts/transfers").handler(accountHandlerProvider.getTransfers());
     router.post("/accounts/transfers").handler(accountHandlerProvider.transferMoney());
     // TODO: Add sub-router.
     return router;

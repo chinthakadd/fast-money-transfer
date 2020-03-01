@@ -1,14 +1,12 @@
 package com.chinthakad.samples.fmt.api;
 
-import com.chinthakad.samples.fmt.core.model.domain.Account;
-import com.chinthakad.samples.fmt.core.model.domain.AccountListHolder;
+import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 import com.chinthakad.samples.fmt.core.model.dto.TransferRequestDto;
 import com.chinthakad.samples.fmt.seedwork.queue.AccountSvcMessage;
 import com.chinthakad.samples.fmt.seedwork.queue.QueueConfig;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
@@ -27,7 +25,7 @@ public class AccountHandlerProvider {
     return routingContext -> {
       log.info("GET /accounts");
       vertx.eventBus().request(QueueConfig.CONFIG_ACCOUNT_SERVICE_QUEUE,
-        AccountSvcMessage.builder().action(AccountSvcMessage.ActionType.LIST).build(),
+        AccountSvcMessage.builder().action(AccountSvcMessage.ActionType.LIST_ACCOUNTS).build(),
         (Handler<AsyncResult<Message<AccountListHolder>>>) reply -> {
           if (reply.succeeded()) {
             routingContext.response().end(Json.encodePrettily(reply.result().body()));
@@ -70,6 +68,24 @@ public class AccountHandlerProvider {
               }
             });
       });
+    };
+  }
+
+  public Handler<RoutingContext> getTransfers() {
+    return routingContext -> {
+      log.info("GET /accounts/transfers");
+      vertx.eventBus().request(QueueConfig.CONFIG_ACCOUNT_SERVICE_QUEUE,
+        AccountSvcMessage.builder().action(AccountSvcMessage.ActionType.LIST_TRANSFERS).build(),
+        (Handler<AsyncResult<Message<AccountListHolder>>>) reply -> {
+          if (reply.succeeded()) {
+            routingContext.response().end(Json.encodePrettily(reply.result().body()));
+          } else {
+            // TODO: Handle error.
+            // TODO: Lets adopt JSEND.
+            reply.cause().printStackTrace();
+            routingContext.fail(500);
+          }
+        });
     };
   }
 }
