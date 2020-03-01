@@ -7,6 +7,8 @@ import com.chinthakad.samples.fmt.seedwork.codec.JdbcMessageCodec;
 import com.chinthakad.samples.fmt.seedwork.codec.AccountListHolderMessageCodec;
 import com.chinthakad.samples.fmt.seedwork.queue.JdbcClientMessage;
 import com.chinthakad.samples.fmt.seedwork.queue.QueueConfig;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(VertxExtension.class)
 public class AccountUnitTest {
@@ -38,7 +39,14 @@ public class AccountUnitTest {
   @Test
   public void testCheckForSufficiency() {
     Account account = Account.builder().availableBalance(BigDecimal.ZERO).build();
-    assertThrows(InsufficientFundsException.class, () -> account.checkForSufficientFunds(new BigDecimal(100.12)));
+    account.checkForSufficientFunds(new BigDecimal(100.12))
+      .onComplete(new Handler<AsyncResult<Void>>() {
+        @Override
+        public void handle(AsyncResult<Void> event) {
+          assertTrue(event.failed());
+          assertTrue(event.cause() instanceof InsufficientFundsException);
+        }
+      });
   }
 
   @Test

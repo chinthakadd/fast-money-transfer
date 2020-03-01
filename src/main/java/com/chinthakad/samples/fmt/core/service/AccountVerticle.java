@@ -45,19 +45,17 @@ public class AccountVerticle extends AbstractVerticle {
     }
     if (accountSvcMessage.getAction() == AccountSvcMessage.ActionType.LIST_TRANSFERS) {
       this.accountService.getTransfers().onSuccess(alh -> message.reply(alh))
-        .onFailure(throwable -> {//TODO: Handle this properly.
+        .onFailure(throwable -> {
+            //TODO: Handle this properly.
             throwable.printStackTrace();
           }
         );
     }
     if (accountSvcMessage.getAction() == AccountSvcMessage.ActionType.TRANSFER) {
       this.accountService.transferMoney((TransferRequestDto) accountSvcMessage.getData())
-        .onSuccess(new Handler<Void>() {
-          @Override
-          public void handle(Void event) {
-            log.info("Transfer Money: COMPLETED");
-            message.reply(Boolean.TRUE);
-          }
+        .onSuccess(event -> {
+          log.info("Transfer Money: COMPLETED");
+          message.reply(Boolean.TRUE);
         })
         .onFailure(throwable -> {
             //TODO: Handle this properly.

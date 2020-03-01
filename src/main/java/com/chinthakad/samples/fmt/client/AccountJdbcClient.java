@@ -107,11 +107,6 @@ public class AccountJdbcClient {
   }
 
 
-  /**
-   * TODO: Add an interface.
-   *
-   * @return
-   */
   public Future<AccountListHolder> getAccounts() {
     Promise<AccountListHolder> accountListHolderPromise = Promise.promise();
     this.jdbcClient.getConnection(

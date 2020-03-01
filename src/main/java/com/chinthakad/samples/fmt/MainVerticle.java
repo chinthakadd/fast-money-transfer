@@ -6,6 +6,11 @@ import com.chinthakad.samples.fmt.core.service.AccountVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 
+/**
+ * Main verticle that performs deployment of all application verticles in a pre-defined order.
+ *
+ * @author Chinthaka D
+ */
 public class MainVerticle extends AbstractVerticle {
 
   @Override

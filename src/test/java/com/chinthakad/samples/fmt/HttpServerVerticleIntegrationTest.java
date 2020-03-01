@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(VertxExtension.class)
@@ -75,10 +76,10 @@ public class HttpServerVerticleIntegrationTest {
     client.get(port, "localhost", "/accounts")
       .send(vertxTestContext.succeeding(response -> vertxTestContext.verify(() -> {
         System.out.println(response.body().toString());
-//        AccountListHolder payload = response.bodyAsJson(AccountListHolder.class);
-//        assertNotNull(payload);
-//        assertTrue(!payload.getAccounts().isEmpty());
-//        assertTrue(payload.getAccounts().size() == 2);
+        AccountListHolder payload = response.bodyAsJson(AccountListHolder.class);
+        assertNotNull(payload);
+        assertTrue(!payload.getAccounts().isEmpty());
+        assertTrue(payload.getAccounts().size() == 2);
         vertxTestContext.completeNow();
       })));
   }
