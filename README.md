@@ -38,25 +38,30 @@ I have used `HTTPie` for testing the APIs from the command line.
 
 The following are some of the sample HTTPie commands to test the application.
 
+GET `/accounts`
+
 ```sh
 http GET http://localhost:8080/accounts
 ```
 
 RESPONSE:
 
-```json
+```
+HTTP/1.1 200 OK
+content-length: 534
+
 [ {
   "accountNumber" : "1234",
   "name" : "test account 1",
-  "availableBalance" : "3000.00",
-  "currentBalance" : "3000.00",
-  "lastUpdatedOn" : "2020-03-01T21:37:31.992438Z"
+  "availableBalance" : "2959.88",
+  "currentBalance" : "2959.88",
+  "lastUpdatedOn" : "2020-03-01T21:39:52.735055Z"
 }, {
   "accountNumber" : "5678",
   "name" : "test account 2",
-  "availableBalance" : "1252.00",
-  "currentBalance" : "1252.00",
-  "lastUpdatedOn" : "2020-03-01T21:37:32.011259Z"
+  "availableBalance" : "1292.12",
+  "currentBalance" : "1292.12",
+  "lastUpdatedOn" : "2020-03-01T21:39:52.738826Z"
 }, {
   "accountNumber" : "6789",
   "name" : "test account 4",
@@ -64,13 +69,57 @@ RESPONSE:
   "currentBalance" : "100.00",
   "lastUpdatedOn" : "2020-03-01T21:37:32.012005Z"
 } ]
-
 ```
+
+POST `/accounts/transfers`
+
+```sh
+http -v POST http://localhost:8080/accounts/transfers fromAccountNumber=1234 toAccountNumber=5678 amount=40.12
+```
+
+RESPONSE:
+```
+POST /accounts/transfers HTTP/1.1
+Accept: application/json, */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Length: 75
+Content-Type: application/json
+Host: localhost:8080
+User-Agent: HTTPie/2.0.0
+
+{
+    "amount": "40.12",
+    "fromAccountNumber": "1234",
+    "toAccountNumber": "5678"
+}
+
+HTTP/1.1 202 Accepted
+content-length: 0
+```
+
+POST `/accounts/transfers`
 
 ```sh
 http GET http://localhost:8080/accounts/transfers
 ```
 
+RESPONSE:
+
+```
+HTTP/1.1 200 OK
+content-length: 179
+
+[ {
+  "id" : 1,
+  "fromAccountNumber" : "1234",
+  "toAccountNumber" : "5678",
+  "amount" : "40.12",
+  "status" : "COMPLETED",
+  "lastUpdatedOn" : "2020-03-01T21:39:52.745528Z"
+} ]
+
+```
 
 ### Wish List
 
