@@ -12,6 +12,8 @@ This API can be consumed by multiple consumers therefore concurrency is an impor
 In order to simplify the implementation, the concept of user principal is not considered and therefore account is considered
 the primary domain of the application.
 
+### Implementation
+
 ### How to Run
 
 To launch your tests:
@@ -23,6 +25,52 @@ To run your application:
 ```
 ./gradlew clean vertxRun
 ```
+
+### APIs
+
+This application has exposed 3 APIs.
+
+- GET `/accounts` : Returns all accounts configured in the application
+- GET `/accounts/transfers`: Returns all transfers related to all accounts
+- POST `/accounts/transfer`: Initiate a account transfer
+
+I have used `HTTPie` for testing the APIs from the command line.
+
+The following are some of the sample HTTPie commands to test the application.
+
+```sh
+http GET http://localhost:8080/accounts
+```
+
+RESPONSE:
+
+```json
+[ {
+  "accountNumber" : "1234",
+  "name" : "test account 1",
+  "availableBalance" : "3000.00",
+  "currentBalance" : "3000.00",
+  "lastUpdatedOn" : "2020-03-01T21:37:31.992438Z"
+}, {
+  "accountNumber" : "5678",
+  "name" : "test account 2",
+  "availableBalance" : "1252.00",
+  "currentBalance" : "1252.00",
+  "lastUpdatedOn" : "2020-03-01T21:37:32.011259Z"
+}, {
+  "accountNumber" : "6789",
+  "name" : "test account 4",
+  "availableBalance" : "100.00",
+  "currentBalance" : "100.00",
+  "lastUpdatedOn" : "2020-03-01T21:37:32.012005Z"
+} ]
+
+```
+
+```sh
+http GET http://localhost:8080/accounts/transfers
+```
+
 
 ### Wish List
 
