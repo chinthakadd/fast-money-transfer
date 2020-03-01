@@ -92,16 +92,16 @@ public class AccountJdbcClient {
   private List<Account> getInitSampleAccounts() {
     return Arrays.asList(
       Account.builder().accountNumber("1234")
-        .availableBalance(BigDecimal.TEN).currentBalance(BigDecimal.TEN)
+        .availableBalance(new BigDecimal(3000)).currentBalance(new BigDecimal(3000))
         .displayName("test account 1").build(),
 
       Account.builder().accountNumber("5678")
-        .availableBalance(BigDecimal.TEN).currentBalance(BigDecimal.TEN)
+        .availableBalance(new BigDecimal(1252)).currentBalance(new BigDecimal(1252))
         .displayName("test account 2").build(),
 
 
       Account.builder().accountNumber("6789")
-        .availableBalance(BigDecimal.TEN).currentBalance(BigDecimal.TEN)
+        .availableBalance(new BigDecimal(100)).currentBalance(new BigDecimal(100))
         .displayName("test account 4").build()
     );
   }

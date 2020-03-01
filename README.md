@@ -1,12 +1,13 @@
 # Fast-money-transfer
 
-This is a Proof-of-Concept developed to learn and understand building a standard microservice using a
-non-spring based stack. I have chosen VertX as the framework for this, since it is a lightweight framework...
-more on this later..
+This is a Proof-of-Concept developed to learn and practice building a standard microservice using a
+non-spring based stack. I have chosen VertX as the framework for this, since it is a lightweight asynchronous
+framework for building microservices.
 
 ### Use-case
 
 Building a Money Transfer API suite that enables an consumer application to transfer money from one account to another.
+This API can be consumed by multiple consumers therefore concurrency is an important aspect.
 
 In order to simplify the implementation, the concept of user principal is not considered and therefore account is considered
 the primary domain of the application.
