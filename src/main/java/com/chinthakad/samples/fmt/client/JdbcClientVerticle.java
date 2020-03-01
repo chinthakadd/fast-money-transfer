@@ -87,7 +87,7 @@ public class JdbcClientVerticle extends AbstractVerticle {
     if (jdbcClientMessage.getRequestType() == JdbcClientMessage.RequestType.UPDATE) {
       // TODO: Handle error scenarios.
       this.transferJdbcClient.updateTransfer(jdbcClientMessage.getData())
-        .onSuccess(accountListHolder -> {
+        .onSuccess(transferUpdate -> {
             log.info("=== SUCCESS: JDBC CLIENT VERTICLE");
             // TODO: Just replying with a boolean for now.
             message.reply(true);
@@ -99,11 +99,11 @@ public class JdbcClientVerticle extends AbstractVerticle {
     if (jdbcClientMessage.getRequestType() == JdbcClientMessage.RequestType.SAVE) {
       // TODO: Handle error scenarios.
       this.transferJdbcClient.saveTransfer(jdbcClientMessage.getData())
-        .onSuccess(accountListHolder -> {
+        .onSuccess(transferSave -> {
             log.info("=== SUCCESS: JDBC CLIENT VERTICLE");
-            message.reply(true);
+            message.reply(transferSave);
           }
-        ).onFailure(event -> message.reply(false)
+        ).onFailure(event -> message.reply(-1)
       );
     }
 

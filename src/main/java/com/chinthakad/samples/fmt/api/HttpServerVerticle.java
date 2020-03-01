@@ -4,7 +4,6 @@ import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
-import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
 import lombok.extern.slf4j.Slf4j;
 

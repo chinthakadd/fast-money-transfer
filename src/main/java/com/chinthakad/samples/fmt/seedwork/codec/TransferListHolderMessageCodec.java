@@ -1,6 +1,5 @@
 package com.chinthakad.samples.fmt.seedwork.codec;
 
-import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 import com.chinthakad.samples.fmt.core.model.dto.TransferListHolder;
 
 public class TransferListHolderMessageCodec extends LocalOnlyMessageCodec<TransferListHolder, TransferListHolder> {

@@ -1,8 +1,8 @@
 package com.chinthakad.samples.fmt.core.service;
 
 import com.chinthakad.samples.fmt.core.model.domain.Account;
-import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 import com.chinthakad.samples.fmt.core.model.domain.Transfer;
+import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 import com.chinthakad.samples.fmt.core.model.dto.TransferListHolder;
 import com.chinthakad.samples.fmt.core.model.dto.TransferRequestDto;
 import com.chinthakad.samples.fmt.core.repository.AccountRepository;
@@ -40,7 +40,23 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public Future<TransferListHolder> getTransfers() {
-    return transferRepository.findAll();
+    return accountRepository.findAll()
+      .compose(accountListHolder -> transferRepository.findAll()
+        .onSuccess(transferListHolder -> transferListHolder.getTransfers().forEach(
+          transfer -> {
+            Account fromAccount = accountListHolder.getAccounts().stream()
+              .filter(account -> transfer.getFromAccount().getId() == (account.getId())).findFirst().orElseThrow(
+                () -> new FmtException("From Account Not Found")
+              );
+            transfer.setFromAccount(fromAccount);
+
+            Account toAccount = accountListHolder.getAccounts().stream()
+              .filter(account -> transfer.getToAccount().getId() == (account.getId())).findFirst().orElseThrow(
+                () -> new FmtException("To Account Not Found")
+              );
+            transfer.setToAccount(toAccount);
+          }
+        )));
   }
 
   @Override
@@ -67,7 +83,9 @@ public class AccountServiceImpl implements AccountService {
               () -> new FmtException("To Account Not Found")
             );
 
-          Transfer.builder().fromAccount(fromAccount).toAccount(toAccount).amount(transferAmount).build()
+          Transfer.builder().fromAccount(fromAccount).toAccount(toAccount).amount(transferAmount)
+            .idAssigned(Promise.promise())
+            .build()
             .withEventBus(eventBus)
             .initiateTransfer()
             .setHandler(event -> alhPromise.complete());

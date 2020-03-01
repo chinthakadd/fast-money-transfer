@@ -1,8 +1,6 @@
 package com.chinthakad.samples.fmt.client;
 
-import com.chinthakad.samples.fmt.core.model.domain.Account;
 import com.chinthakad.samples.fmt.core.model.domain.Transfer;
-import com.chinthakad.samples.fmt.core.model.dto.AccountListHolder;
 import com.chinthakad.samples.fmt.core.model.dto.TransferListHolder;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -95,8 +93,8 @@ public class TransferJdbcClient {
     return tlhPromise.future();
   }
 
-  public Future<Void> saveTransfer(Transfer transfer) {
-    Promise<Void> savePromise = Promise.promise();
+  public Future<Integer> saveTransfer(Transfer transfer) {
+    Promise<Integer> savePromise = Promise.promise();
     log.info("Save transfer: {}", transfer);
     this.jdbcClient.getConnection(
       arSql -> {
@@ -119,7 +117,7 @@ public class TransferJdbcClient {
                   savePromise.fail("Save update due to optimistic concurrency");
                 } else {
                   log.info("save transfer successfully");
-                  savePromise.complete();
+                  savePromise.complete(result.result().getKeys().getInteger(0));
                 }
               } else {
                 result.cause().printStackTrace();

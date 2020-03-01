@@ -57,18 +57,24 @@ public class Account {
     return this;
   }
 
-  public void checkForSufficientFunds(BigDecimal creditAmount) {
+  public Future<Void> checkForSufficientFunds(BigDecimal creditAmount) {
+    Promise<Void> checkPromise = Promise.promise();
     if (availableBalance.compareTo(creditAmount) < 1) {
-      throw new InsufficientFundsException(this.id, this.availableBalance, creditAmount);
+      checkPromise.fail(new InsufficientFundsException(this.id, this.availableBalance, creditAmount));
+    } else {
+      checkPromise.complete();
     }
+    return checkPromise.future();
   }
 
   public Future<Void> withholdMoney(BigDecimal amount) {
-    checkForSufficientFunds(amount);
-    Promise<Void> promise = Promise.promise();
-    this.availableBalance = this.availableBalance.add(amount.negate());
-    this.persist(promise);
-    return promise.future();
+    return checkForSufficientFunds(amount)
+      .compose(aVoid -> {
+        Promise<Void> promise = Promise.promise();
+        availableBalance = availableBalance.add(amount.negate());
+        persist(promise);
+        return promise.future();
+      });
   }
 
   public Future<Void> withdrawMoney(BigDecimal amount) {
