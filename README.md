@@ -34,7 +34,7 @@ This application has exposed 3 APIs.
 
 - GET `/accounts` : Returns all accounts configured in the application
 - GET `/accounts/transfers`: Returns all transfers related to all accounts
-- POST `/accounts/transfers`: Initiate a account transfer
+- POST `/accounts/transfers`: Initiate an account transfer
 
 I have used `HTTPie` for testing the APIs from the command line.
 
@@ -134,11 +134,12 @@ during the transfer operation (due to concurrency), we can expose an API or auto
 attempts to retry the transfer operation.
 
 NOTE: Currently, if the money transfer orchestration fails at an intermediate state, account balances will not
-reflect a consistent state. In order to make it consistent, aforementioned reconciliation mechanism needs to be implemented.
+reflect a consistent state. However, since `transfers` table captures the `transferStatus` that can be used
+to create the reconciliation logic.
 
 #### Technical
 
-- Introduce a lightweight depedency injection framework such as Google Guice.
+- Introduce a lightweight depedency injection framework such as Google Guice. However I followed Dependency Inversion principle where it made sense.
 - Implement Reactive Programming into Vert.x using RxJava.
 - Design and implement a standard message format between Verticles
 - Adopt a light weight Java ORM Framework such ActiveJDBC (JavaLite)
