@@ -115,37 +115,35 @@ public class MoneyTransferE2eTest {
 
                 logger.info("Await for Transfer to occur");
                 try {
-                  vertxTestContext.awaitCompletion(5, TimeUnit.SECONDS);
+                  vertxTestContext.awaitCompletion(2, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
-                  e.printStackTrace();
+                  vertxTestContext.failNow(e);
                 }
 
                 client.get(port, "localhost", "/accounts")
                   .send(updatedAccounts -> {
                     try {
 
-                      logger.info("=================");
                       logger.info("{}", updatedAccounts.result().bodyAsJsonArray());
-                      logger.info("=================");
+                      // Check if current balance of fromAccount is updated properly.
+                      assertEquals(fromAccountCurrentBalance.add(transferAmount.negate()),
+                        new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(0).getString("currentBalance")));
+
+                      // Check if available balance of fromAccount updated properly.
+                      assertEquals(fromAccountAvailableBalance.add(transferAmount.negate()),
+                        new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(0).getString("availableBalance")));
+
+                      // Check if current balance of fromAccount is updated properly.
+                      assertEquals(toAccountCurrentBalance.add(transferAmount),
+                        new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(1).getString("currentBalance")));
+
+                      // Check if available balance of fromAccount updated properly.
+                      assertEquals(toAccountAvailableBalance.add(transferAmount),
+                        new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(1).getString("availableBalance")));
+
                     } finally {
                       vertxTestContext.completeNow();
                     }
-
-                    // Check if current balance of fromAccount is updated properly.
-                    assertEquals(fromAccountCurrentBalance.add(transferAmount.negate()),
-                      new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(0).getString("currentBalance")));
-
-                    // Check if available balance of fromAccount updated properly.
-                    assertEquals(fromAccountAvailableBalance.add(transferAmount.negate()),
-                      new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(0).getString("availableBalance")));
-
-                    // Check if current balance of fromAccount is updated properly.
-                    assertEquals(toAccountCurrentBalance.add(transferAmount),
-                      new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(1).getString("currentBalance")));
-
-                    // Check if available balance of fromAccount updated properly.
-                    assertEquals(toAccountAvailableBalance.add(transferAmount),
-                      new BigDecimal(updatedAccounts.result().bodyAsJsonArray().getJsonObject(1).getString("availableBalance")));
 
                   });
               }
