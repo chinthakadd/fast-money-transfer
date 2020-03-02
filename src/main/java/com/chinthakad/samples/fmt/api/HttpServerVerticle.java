@@ -12,7 +12,14 @@ public class HttpServerVerticle extends AbstractVerticle {
 
   private AccountHandlerProvider accountHandlerProvider;
 
-  private static final int port = 8080;
+  private int port = -1;
+
+  public HttpServerVerticle() {
+  }
+
+  public HttpServerVerticle(int port) {
+    this.port = port;
+  }
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
@@ -23,7 +30,9 @@ public class HttpServerVerticle extends AbstractVerticle {
     retriever.getConfig(
       rar -> {
         if (rar.succeeded()) {
-          int port = rar.result().getInteger("port");
+          if (port == -1) {
+            port = rar.result().getInteger("port");
+          }
           System.out.println("port:==" + port);
           httpServer.requestHandler(router())
             .listen(port, har -> {

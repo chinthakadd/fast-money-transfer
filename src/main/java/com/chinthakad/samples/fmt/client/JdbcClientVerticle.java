@@ -18,6 +18,15 @@ public class JdbcClientVerticle extends AbstractVerticle {
   private AccountJdbcClient accountJdbcClient;
   private TransferJdbcClient transferJdbcClient;
 
+  private String dbName = "test-db";
+
+  public JdbcClientVerticle() {
+  }
+
+  public JdbcClientVerticle(String dbName) {
+    this.dbName = dbName;
+  }
+
   @Override
   public void start(Promise<Void> startPromise) {
     initDatabase().onComplete(
@@ -36,7 +45,7 @@ public class JdbcClientVerticle extends AbstractVerticle {
   private Future<Void> initDatabase() {
     JDBCClient jdbcClient = JDBCClient.createShared(vertx,
       new JsonObject()
-        .put("url", "jdbc:h2:mem:test-db;DB_CLOSE_ON_EXIT=FALSE")
+        .put("url", String.format("jdbc:h2:mem:%s;DB_CLOSE_ON_EXIT=TRUE", dbName))
         .put("driver_class", "org.h2.Driver")
         .put("user", "sa")
         .put("password", "")

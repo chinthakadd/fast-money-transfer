@@ -2,12 +2,10 @@ package com.chinthakad.samples.fmt;
 
 import com.chinthakad.samples.fmt.api.HttpServerVerticle;
 import com.chinthakad.samples.fmt.client.JdbcClientVerticle;
+import com.chinthakad.samples.fmt.core.model.domain.Transfer;
 import com.chinthakad.samples.fmt.core.model.dto.TransferRequestDto;
 import com.chinthakad.samples.fmt.core.service.AccountVerticle;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
+import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -21,7 +19,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.ServerSocket;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,19 +35,21 @@ public class MoneyTransferE2eTest {
   private static Logger logger = LoggerFactory.getLogger(MoneyTransferE2eTest.class);
   private Vertx vertx;
   private WebClient client;
-  private int port = 8080;
+  private static int port = 9090;
+  private int[] ports = {9090, 9091, 9092, 9093, 9094};
 
   @BeforeEach
-  public void prepare(VertxTestContext testContext) {
+  public void prepare(VertxTestContext testContext) throws IOException {
+
     vertx = Vertx.vertx();
     client = WebClient.create(vertx);
 
     Promise<String> initHttpServer = Promise.promise();
-    vertx.deployVerticle(new HttpServerVerticle(), initHttpServer);
+    vertx.deployVerticle(new HttpServerVerticle(++port), initHttpServer);
     initHttpServer.future()
       .compose(httpServerVerticleId -> {
         Promise<String> dbClientVerticleDeployment = Promise.promise();
-        vertx.deployVerticle(new JdbcClientVerticle(), dbClientVerticleDeployment);
+        vertx.deployVerticle(new JdbcClientVerticle("h2db-" + port), dbClientVerticleDeployment);
         return dbClientVerticleDeployment.future();
       })
       .compose(httpServerVerticleId -> {
@@ -153,8 +155,59 @@ public class MoneyTransferE2eTest {
   }
 
   @Test
-  public void transferWithInsufficientFunds() {
+  public void transferWithInsufficientFunds(VertxTestContext vertxTestContext) {
+    client.get(port, "localhost", "/accounts")
+      .send(vertxTestContext.succeeding(response -> vertxTestContext.verify(() -> {
+          JsonArray payload = response.bodyAsJsonArray();
 
+          JsonObject fromAccount = payload.getJsonObject(0);
+          String fromAccountNumber = fromAccount.getString("accountNumber");
+
+          JsonObject toAccount = payload.getJsonObject(1);
+          String toAccountNumber = toAccount.getString("accountNumber");
+
+          BigDecimal bigTransferAmount = new BigDecimal(30000);
+          TransferRequestDto transferRequestDto = TransferRequestDto.builder()
+            .fromAccountNumber(fromAccountNumber)
+            .toAccountNumber(toAccountNumber)
+            .amount(bigTransferAmount)
+            .build();
+
+          client.post(port, "localhost", "/accounts/transfers")
+            .sendJson(transferRequestDto, event -> {
+
+              logger.info("Await for Transfer to occur");
+              try {
+                vertxTestContext.awaitCompletion(2, TimeUnit.SECONDS);
+              } catch (InterruptedException e) {
+                vertxTestContext.failNow(e);
+              }
+
+              // Prove Transfer Failed
+              client.get(port, "localhost", "/accounts/transfers")
+                .send(transfers -> {
+                  try {
+                    logger.info("{}", transfers.result().bodyAsJsonArray());
+                    assertTrue(transfers.result().bodyAsJsonArray().getJsonObject(0)
+                      .getString("status").equals(Transfer.TransferStatus.FAILED_TO_WITHHOLD.name()));
+                  } finally {
+                    vertxTestContext.completeNow();
+                  }
+
+                });
+
+            });
+        }))
+      );
   }
 
+  public static boolean isAvailable(int portNr) {
+    boolean portFree;
+    try (var ignored = new ServerSocket(portNr)) {
+      portFree = true;
+    } catch (IOException e) {
+      portFree = false;
+    }
+    return portFree;
+  }
 }

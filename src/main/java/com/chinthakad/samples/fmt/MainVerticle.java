@@ -6,6 +6,9 @@ import com.chinthakad.samples.fmt.core.service.AccountVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 /**
  * Main verticle that performs deployment of all application verticles in a pre-defined order.
  *
