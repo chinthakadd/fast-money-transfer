@@ -34,7 +34,7 @@ This application has exposed 3 APIs.
 
 - GET `/accounts` : Returns all accounts configured in the application
 - GET `/accounts/transfers`: Returns all transfers related to all accounts
-- POST `/accounts/transfer`: Initiate a account transfer
+- POST `/accounts/transfers`: Initiate a account transfer
 
 I have used `HTTPie` for testing the APIs from the command line.
 
