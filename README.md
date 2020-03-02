@@ -139,7 +139,7 @@ to create the reconciliation logic.
 
 #### Technical
 
-- Introduce a lightweight depedency injection framework such as Google Guice. However I followed Dependency Inversion principle where it made sense.
+- Introduce a lightweight depedency injection framework such as Google Guice. However I followed Dependency Inversion principle wherever it made sense.
 - Implement Reactive Programming into Vert.x using RxJava.
 - Design and implement a standard message format between Verticles
 - Adopt a light weight Java ORM Framework such ActiveJDBC (JavaLite)
