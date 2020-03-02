@@ -17,6 +17,19 @@ import java.util.function.Consumer;
 
 /**
  * JDBC Client Implementation for Account.
+ * <p>
+ * Since we are using Vert.x's JDBC Client Implementation, we are implementing our own optimistic
+ * concurrency mechanism with a #version column.
+ * <p>
+ * Since {@link JdbcClientVerticle} is a separate verticle, service layer will not be able manage
+ * transactions like in a typical Spring-based application.
+ * Jdbc Client Implementations are managing local transactions and provide optimistic locking with version
+ * column.
+ * <p>
+ * The responsibility to manage consistency of state across domain models during a business function such as money transfer
+ * is assigned to the Domain Layer.
+ *
+ * @author Chinthaka D
  */
 @Slf4j
 public class AccountJdbcClient {
@@ -96,7 +109,7 @@ public class AccountJdbcClient {
         .displayName("test account 1").build(),
 
       Account.builder().accountNumber("5678")
-        .availableBalance(new BigDecimal(1252)).currentBalance(new BigDecimal(1252))
+        .availableBalance(new BigDecimal(1500)).currentBalance(new BigDecimal(1500))
         .displayName("test account 2").build(),
 
 

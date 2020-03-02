@@ -12,6 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * Refer {@link AccountJdbcClient} for design thoughts around JDBC Client implementation.
+ * Exposed via {@link JdbcClientVerticle}.
+ *
+ * @author Chinthaka D
+ */
 @Slf4j
 public class TransferJdbcClient {
 

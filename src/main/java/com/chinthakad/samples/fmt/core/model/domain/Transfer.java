@@ -19,6 +19,15 @@ import java.time.Instant;
 /**
  * Represents the Transfer domain. It has one-to-one relationship with {@link Account} in
  * {@link #toAccount}  and {@link #fromAccount}.
+ * <p>
+ * Implements {@link #initiateTransfer()} business function which takes care of the money transferring
+ * between two accounts.
+ * <p>
+ * Each transfer request is persisted to a database table. Transfer Domain Model performs an orchestration
+ * between accounts, trying to transfer the money without getting into an inconsistent state.
+ * What we are trying to achieve:?
+ * - Ensure sufficient funds are available in the {@link #fromAccount}
+ * - Don't make funds available to {@link #toAccount} until money is withdrawn from {@link #fromAccount}
  */
 @Data
 @Slf4j

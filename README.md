@@ -21,6 +21,8 @@ To launch your tests:
 ./gradlew clean test
 ```
 
+`MoneyTransferE2eTest` is a test case written to show-case how the application APIs are behaving from E2E perspective.
+
 To run your application:
 ```
 ./gradlew clean vertxRun
@@ -125,11 +127,23 @@ content-length: 179
 
 The following were some of the TODOs in my wish list that I was unable to complete.
 
+#### Business
+
+- Implement a reconciliation mechanism for transfer. Ex: If the transaction fails since the account balance has changed
+during the transfer operation (due to concurrency), we can expose an API or automated reconciliation loop that
+attempts to retry the transfer operation.
+
+NOTE: Currently, if the money transfer orchestration fails at an intermediate state, account balances will not
+reflect a consistent state. In order to make it consistent, aforementioned reconciliation mechanism needs to be implemented.
+
+#### Technical
+
 - Introduce a lightweight depedency injection framework such as Google Guice.
 - Implement Reactive Programming into Vert.x using RxJava.
 - Design and implement a standard message format between Verticles
 - Adopt a light weight Java ORM Framework such ActiveJDBC (JavaLite)
 - Further fine tune the architecture based on hexagonal design
+- More Java Documentation
 
 ### References
 
