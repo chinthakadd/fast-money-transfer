@@ -135,7 +135,7 @@ attempts to retry the transfer operation.
 
 NOTE: Currently, if the money transfer orchestration fails at an intermediate state, account balances will not
 reflect a consistent state. However, since `transfers` table captures the `transferStatus` that can be used
-to create the reconciliation logic.
+to create the reconciliation logic and therefore achieve eventual consistency.
 
 #### Technical
 
