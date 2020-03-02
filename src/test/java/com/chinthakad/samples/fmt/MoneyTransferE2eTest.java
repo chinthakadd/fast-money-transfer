@@ -36,10 +36,9 @@ public class MoneyTransferE2eTest {
   private Vertx vertx;
   private WebClient client;
   private static int port = 9090;
-  private int[] ports = {9090, 9091, 9092, 9093, 9094};
 
   @BeforeEach
-  public void prepare(VertxTestContext testContext) throws IOException {
+  public void prepare(VertxTestContext testContext) {
 
     vertx = Vertx.vertx();
     client = WebClient.create(vertx);
@@ -201,13 +200,4 @@ public class MoneyTransferE2eTest {
       );
   }
 
-  public static boolean isAvailable(int portNr) {
-    boolean portFree;
-    try (var ignored = new ServerSocket(portNr)) {
-      portFree = true;
-    } catch (IOException e) {
-      portFree = false;
-    }
-    return portFree;
-  }
 }
