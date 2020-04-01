@@ -5,6 +5,7 @@ import com.chinthakad.samples.fmt.client.JdbcClientVerticle;
 import com.chinthakad.samples.fmt.core.service.AccountVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,6 +16,10 @@ import java.net.ServerSocket;
  * @author Chinthaka D
  */
 public class MainVerticle extends AbstractVerticle {
+
+  public static void main(String[] args) {
+    Vertx.vertx().deployVerticle(new MainVerticle());
+  }
 
   @Override
   public void start(Promise<Void> startPromise) {

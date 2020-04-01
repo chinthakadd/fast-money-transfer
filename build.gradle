@@ -1,13 +1,11 @@
 plugins {
-  id 'java'
-  id 'application'
-  id 'com.github.johnrengelman.shadow' version '5.0.0'
-  id 'io.vertx.vertx-plugin' version '1.0.1'
+  id 'io.vertx.vertx-plugin' version '0.1.0'
+  id 'com.google.cloud.tools.jib' version '2.1.0'
 }
 
 group = 'com.chinthakad.samples'
 version = '1.0.0-SNAPSHOT'
-
+mainClassName = "com.chinthakad.samples.fmt.MainVerticle"
 repositories {
   mavenCentral()
 }
@@ -26,6 +24,7 @@ application {
 }
 
 sourceCompatibility = '1.11'
+targetCompatibility = "1.11"
 
 dependencies {
   implementation "io.vertx:vertx-web:$vertxVersion"
@@ -51,5 +50,15 @@ test {
   useJUnitPlatform()
   testLogging {
     events 'PASSED', 'FAILED', 'SKIPPED'
+  }
+}
+
+jib {
+  to {
+    image = "dev.local/fmt"
+    tags = ["0.0.1"]
+  }
+  container {
+    ports = ['8080']
   }
 }
