@@ -12,3 +12,7 @@ jsonpath="{.items[?(@.metadata.annotations['kubernetes\.io/service-account\.name
 
 echo $token
 
+sleep 5
+
+istioctl manifest apply --set profile=default --set values.gateways.istio-ingressgateway.type=NodePort
+export NODE_PORT=$(kubectl --namespace istio-system get service/istio-ingressgateway -o json | jq -c '.spec.ports[] | select(.name=="http2") | .nodePort')

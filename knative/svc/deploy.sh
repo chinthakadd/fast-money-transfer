@@ -6,5 +6,6 @@ kubectl apply -f ./fmt-svc.yaml
 
 #curl -v -i -H "Host: knative-vertx-fmt.default.example.com" http://10.244.0.7:80/accounts
 
+#curl -v -i -H "Host: knative-vertx-fmt.default.example.com" http://localhost:${NODE_PORT}/accounts
 
-#curl -v -i -H "Host: knative-vertx-fmt.default.example.com" http://10.111.148.63:80/accounts
+#curl -v -i -H "Host: knative-vertx-fmt.default.example.com" http://10.101.98.186:80/accounts

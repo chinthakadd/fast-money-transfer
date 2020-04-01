@@ -11,75 +11,75 @@ nodes:
         kubeletExtraArgs:
           node-labels: "ingress-ready=true"
           authorization-mode: "AlwaysAllow"
-#    - |
-#      kind: ClusterConfiguration
-#      metadata:
-#        name: config
-#      apiServer:
-#        extraArgs:
-#          service-node-port-range: "32760-32780"
+    - |
+      kind: ClusterConfiguration
+      metadata:
+        name: config
+      apiServer:
+        extraArgs:
+          service-node-port-range: "32760-32780"
 
-#    extraPortMappings:
-#    - containerPort: 32760
-#      hostPort: 32760
-#      protocol: TCP
-#    - containerPort: 32761
-#      hostPort: 32761
-#      protocol: TCP
-#    - containerPort: 32762
-#      hostPort: 32762
-#      protocol: TCP
-#    - containerPort: 32763
-#      hostPort: 32763
-#      protocol: TCP
-#    - containerPort: 32764
-#      hostPort: 32764
-#      protocol: TCP
-#    - containerPort: 32765
-#      hostPort: 32765
-#      protocol: TCP
-#    - containerPort: 32766
-#      hostPort: 32766
-#      protocol: TCP
-#    - containerPort: 32767
-#      hostPort: 32767
-#      protocol: TCP
-#    - containerPort: 32768
-#      hostPort: 32768
-#      protocol: TCP
-#    - containerPort: 32769
-#      hostPort: 32769
-#      protocol: TCP
-#    - containerPort: 32770
-#      hostPort: 32770
-#      protocol: TCP
-#    - containerPort: 32771
-#      hostPort: 32771
-#      protocol: TCP
-#    - containerPort: 32772
-#      hostPort: 32772
-#      protocol: TCP
-#    - containerPort: 32773
-#      hostPort: 32773
-#      protocol: TCP
-#    - containerPort: 32774
-#      hostPort: 32774
-#      protocol: TCP
-#    - containerPort: 32775
-#      hostPort: 32775
-#      protocol: TCP
-#    - containerPort: 32776
-#      hostPort: 32776
-#      protocol: TCP
-#    - containerPort: 32777
-#      hostPort: 32777
-#      protocol: TCP
-#    - containerPort: 32778
-#      hostPort: 32778
-#      protocol: TCP
-#    - containerPort: 32779
-#      hostPort: 32779
-#      protocol: TCP
-#    - containerPort: 32780
-#      hostPort: 32780
-#      protocol: TCP
+    extraPortMappings:
+    - containerPort: 32760
+      hostPort: 32760
+      protocol: TCP
+    - containerPort: 32761
+      hostPort: 32761
+      protocol: TCP
+    - containerPort: 32762
+      hostPort: 32762
+      protocol: TCP
+    - containerPort: 32763
+      hostPort: 32763
+      protocol: TCP
+    - containerPort: 32764
+      hostPort: 32764
+      protocol: TCP
+    - containerPort: 32765
+      hostPort: 32765
+      protocol: TCP
+    - containerPort: 32766
+      hostPort: 32766
+      protocol: TCP
+    - containerPort: 32767
+      hostPort: 32767
+      protocol: TCP
+    - containerPort: 32768
+      hostPort: 32768
+      protocol: TCP
+    - containerPort: 32769
+      hostPort: 32769
+      protocol: TCP
+    - containerPort: 32770
+      hostPort: 32770
+      protocol: TCP
+    - containerPort: 32771
+      hostPort: 32771
+      protocol: TCP
+    - containerPort: 32772
+      hostPort: 32772
+      protocol: TCP
+    - containerPort: 32773
+      hostPort: 32773
+      protocol: TCP
+    - containerPort: 32774
+      hostPort: 32774
+      protocol: TCP
+    - containerPort: 32775
+      hostPort: 32775
+      protocol: TCP
+    - containerPort: 32776
+      hostPort: 32776
+      protocol: TCP
+    - containerPort: 32777
+      hostPort: 32777
+      protocol: TCP
+    - containerPort: 32778
+      hostPort: 32778
+      protocol: TCP
+    - containerPort: 32779
+      hostPort: 32779
+      protocol: TCP
+    - containerPort: 32780
+      hostPort: 32780
+      protocol: TCP
